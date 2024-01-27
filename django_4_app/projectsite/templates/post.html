@@ -1,0 +1,57 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-7 col-lg-7 d-flex align-items-center justify-content-center">
+            <img id="post-full-image" src="{{ post.0.image.url }}" width="100%">
+        </div>
+        <div class="col-md-5 col-lg-5">
+            <div class="block">
+                <a class="profile_link" href="/user_profile/{{ user.id }}"><img class="profile-image my-2" src="{{ profile.image.url }}" width="50" height="50"> <b class="mx-2">{{ post.0.user.username }}</b></a>
+            </div>
+            <div class="block" style="height: 90%;">
+                <p class="text-white"><a class="profile_link" href="/user_profile/{{ post.0.user.id }}"><img class="profile-image my-2" src="{{ profile.image.url }}" width="45" height="45"><b class="mx-2">{{ post.0.user.username }}</b></a> {{ post.description }}</p>
+                    <div style="overflow-y: scroll; height: 90%;" id="comments">
+                        {% for c in comments %}
+                            <div id="{{ c.0.id }}" class="comment_block">
+                                <input type="hidden" class="is_liked" data-for="{{ c.1 }}">
+                                <div style="display: flex;">
+                                    <div>
+                                        <a href="/user_profile/{{ c.0.user.id }}"><img class="profile-image my-2" src="{{ c.0.user.image.url }}" width="35" height="35"></a>
+                                    </div>
+                                    <div style="width: 500px;">
+                                        <p class="text-white"><a class="profile_link" href="/user_profile/{{ c.0.user.id }}"><b class="mx-2">{{ c.0.user.username }}</b></a>
+                                            {{ c.0.body }}<br><button class="btn_add mx-2" style="font-size: 11px; color: #E0E0E0;" id="delete_comment{{ c.0.id }}" data-url="/post/{{ post.0.id }}/" data-id="{{ c.0.id }}">Delete</button>
+                                        </p>
+                                    </div>
+                                    <div class="comment_like" data-id="{{ c.0.id }}" style="display: flex;">
+                                        <div>
+                                            <small class="text-white-50 mx-2">{{ c.2 }}</small>
+                                        </div>
+                                        <div>
+                                            <a class="comment_like_btn" data-url="/post/{{ post.0.id }}/" data-id="{{ c.0.id }}">
+                                                <img data-url="/post/{{ post.0.id }}/" data-id="{{ c.0.id }}" class="comment_like mb-2" src="" width="12">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+            </div>
+            <div class="block my-2 likes">
+                <input type="hidden" class="post_is_liked" data-for="{{ post.1 }}">
+                <a data-url="/post/{{ post.0.id }}/" data-id="{{ post.0.id }}">
+                    <img class="like" id="image-like" data-id="{{ post.0.id }}" data-url="/post/{{ post.0.id }}/" src="" width="23">
+                </a>
+                <p class="my-2 text-white"><b id="like">{{ like_amount }}</b> likes</p>
+                <p class="text-white-50">{{ post.0.created_at }}</p>
+            </div>
+            <div>
+                {% csrf_token %}
+                {% for f in form %}
+                {{ f }}
+                {% endfor %}
+                <button id="input" class="btn_add" data-url="/post/{{ post.0.id }}/" data-id="{{ post.0.id }}">Add</button>
+            </div>
+        </div>
+    </div>
+</div>

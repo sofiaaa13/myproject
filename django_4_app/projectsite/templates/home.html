@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}<title>{{ title }}</title>{% endblock %}
+{% block import %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}" type="text/css">
+    <script src="{% static 'js/home.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-7 col-lg-8 my-4">
+        {% csrf_token %}
+        {% if posts %}
+            {% for p in posts %}
+                <div class="post" id="{{ p.0.id }}">
+                    <a class="profile_link" href="/user_profile/{{ p.0.user.id }}"><img class="profile-image pr-3" src="{{ p.0.user.image.url }}" width="35" height="35"> <b>{{ p.0.user.username }}</b></a><br>
+                    <a><img class="post_image my-2" data-id="{{ p.0.id }}" src="{{ p.0.image.url }}"></a><br>
+                    <div class="likes" data-id="{{ p.0.id }}">
+                        <input type="hidden" class="is_liked" data-for="{{ p.1 }}">
+                        <a data-id="{{ p.0.id }}" data-url="/">
+                            <img class="like_btn" data-id="{{ p.0.id }}" data-url="/" src="{% static 'design/like.png' %}" width="23">
+                        </a>
+                        <a class="mx-2 my-2 comment">
+                            <img class="comment_ico" data-src="{{ p.0.image.url }}" data-id="{{ p.0.id }}" src="{% static 'design/comment.png' %}" width="23">
+                        </a>
+                        <p class="my-2 text-white"><b class="like_amount">{{ p.2 }}</b> likes</p>
+                    </div>
+                    <p class="text-white"><a class="profile_link" href="/user_profile/{{ p.0.user.id }}"><b>{{ p.0.user.username }}</b></a> {{ p.0.description }}</p>
+                    <a class="link-light" style="text-decoration: none;" href="/post/{{ p.0.id }}">Add Comment</a>
+                    <hr>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div class="col-md-2 col-lg-2 my-4">
+        <a href="/profile"><img class="profile-image pr-3" src="{{ user.image.url }}" width="50" height="50"></a>
+        <a class="profile_link mx-2" href="/profile"><b>{{ user.username }}</b></a><br>
+        <h6 class="my-3 text-white-50">Recommendations</h6>
+        <hr>
+    </div>
+{% endblock %}

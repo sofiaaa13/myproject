@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}<title>{{ title }}</title>{% endblock %}
+{% block import %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/search.css' %}" type="text/css">
+    <script src="{% static 'js/search.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+     <div class="col-md-7 col-lg-8 my-4">
+         <div class="mx-5">
+                {% csrf_token %}
+                {% for f in form %}
+                {{ f }}
+                {% endfor %}
+         </div>
+         <div id="result" class="my-4">
+         </div>
+    </div>
+    <div class="col-md-2 col-lg-2 my-4">
+        <a href="/profile"><img class="profile-image pr-3" src="{{ profile.image.url }}" width="50" height="50"></a>
+        <a class="profile_link mx-2" href="/profile"><b>{{ user.username }}</b></a><br>
+        <h6 class="my-3 text-white-50">Recommendations</h6>
+        <hr>
+    </div>
+{% endblock %}
